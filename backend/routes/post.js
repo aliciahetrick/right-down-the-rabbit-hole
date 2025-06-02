@@ -10,7 +10,6 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    console.log("get");
     res.send(await Post.findAll());
   } catch (error) {
     console.error(error);
