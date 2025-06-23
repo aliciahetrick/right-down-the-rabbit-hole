@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 
+interface Post {
+  id: number; // Example fields
+  title: string;
+  content: string;
+}
+
 const DataComponent = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Post[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/data")
+    fetch("http://localhost:5000/api/post")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+        console.log(response.json);
         return response.json();
       })
       .then((fetchedData) => {
