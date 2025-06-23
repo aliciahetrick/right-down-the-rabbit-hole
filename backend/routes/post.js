@@ -27,9 +27,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    // const product = await Post.create({ text: "Hello world", likes: 5 });
-    // const product = await Post.create(req.body);
-    res.send(product);
+    const post = await Post.create({ id: 2, text: "Hello world", likes: 5 });
+    // const post = await Post.create(req.body);
+    res.send(post);
   } catch (err) {
     console.log(err);
   }
@@ -37,9 +37,9 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const post = await Post.findByPk(req.params.id);
-    const updatedPost = await post.update({});
-    res.send(await updatedPost.save());
+    // const post = await Post.findByPk(req.params.id);
+    // const updatedPost = await post.update({});
+    // res.send(await updatedPost.save());
   } catch (err) {
     console.log("There was a problem updating product.", err);
   }
