@@ -27,8 +27,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const post = await Post.create({ text: "Hello world", likes: 5 });
-    // const post = await Post.create(req.body);
+    req.body.likes = 0;
+    console.log("request body", req.body);
+    const post = await Post.create(req.body);
     res.send(post);
   } catch (err) {
     console.log(err);

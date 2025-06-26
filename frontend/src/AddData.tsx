@@ -1,45 +1,47 @@
 import { useEffect, useState } from "react";
 
-interface Post {
-  id: number; // Example fields
-  title: string;
-  content: string;
-}
+// interface Post {
+//   id: number; // Example fields
+//   title: string;
+//   content: string;
+// }
 
 const AddData = () => {
-  const [data, setData] = useState<Post[]>([]);
+  const [text, setText] = useState("");
 
-  useEffect(() => {
-    const requestData = {
-      text: "hello",
-      likes: 5,
-    };
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: text }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert("Entry added successfully!");
+        setText(""); // Clear input
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error adding entry:", error);
+      alert("Failed to add entry.");
+    }
+  };
 
-    fetch("http://localhost:5000/api/post", {
-      method: "POST", // Specify the HTTP method
-      headers: {
-        "Content-Type": "application/json", // Set the content type
-      },
-      body: JSON.stringify(requestData), // Convert the data to JSON
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((fetchedData) => {
-        if (Array.isArray(fetchedData)) {
-          setData(fetchedData);
-        } else {
-          console.error("API returned data that is not an array:", fetchedData);
-          setData([]); // Fallback to an empty array
-        }
-      })
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
-
-  return <div>{data.length > 0 && <p>Data loaded!</p>}</div>;
+  return (
+    <>
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Enter post text"
+      />
+      <button onClick={handleSubmit}>Add post</button>
+    </>
+  );
 };
 
 export default AddData;
