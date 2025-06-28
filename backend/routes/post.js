@@ -1,7 +1,4 @@
 import express from "express";
-// const {
-//   models: { Post },
-// } = require("../db/db.js");
 
 import { models } from "../db/index.js";
 const { Post } = models;
@@ -36,13 +33,33 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id/decrement", async (req, res) => {
   try {
-    // const post = await Post.findByPk(req.params.id);
-    // const updatedPost = await post.update({});
-    // res.send(await updatedPost.save());
+    const post = await Post.findByPk(req.params.id);
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+    const likes = post.likes > 0 ? post.likes - 1 : 0;
+    const updatedPost = await post.update({ likes });
+    res.send(updatedPost);
   } catch (err) {
-    console.log("There was a problem updating product.", err);
+    console.error("There was a problem updating the post.", err);
+    res.status(500).send("Internal server error");
+  }
+});
+
+router.put("/:id/add", async (req, res) => {
+  try {
+    const post = await Post.findByPk(req.params.id);
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+    const likes = post.likes + 1;
+    const updatedPost = await post.update({ likes });
+    res.send(updatedPost);
+  } catch (err) {
+    console.error("There was a problem updating the post.", err);
+    res.status(500).send("Internal server error");
   }
 });
 
