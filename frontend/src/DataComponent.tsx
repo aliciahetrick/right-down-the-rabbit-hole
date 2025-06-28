@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import PostComponent from "./Post";
 
 interface Post {
   id: number; // Example fields
-  title: string;
-  content: string;
+  text: string;
+  likes: number;
 }
 
 const DataComponent = () => {
@@ -31,13 +32,9 @@ const DataComponent = () => {
 
   return (
     <div>
-      <h1>Data from PostgreSQL</h1>
+      <h1>Theories</h1>
       {Array.isArray(data) && data.length > 0 ? (
-        <ul>
-          {data.map((item, index) => (
-            <li key={index}>{JSON.stringify(item)}</li>
-          ))}
-        </ul>
+        <PostComponent postData={data} />
       ) : (
         <p>No data</p>
       )}
