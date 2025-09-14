@@ -38,6 +38,9 @@ const AddData = () => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter post text"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleSubmit();
+        }}
       />
       <button onClick={handleSubmit}>Add post</button>
     </>
